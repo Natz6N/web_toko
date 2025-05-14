@@ -6,7 +6,6 @@ import { type NavItem } from '@/types/index';
 import { Link } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
-
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
@@ -15,12 +14,12 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Categories',
-        href: '/dashboard/categories',
+        href: route('categories.index.dashboard'),
         icon: LayoutGrid,
     },
     {
         title: 'Products',
-        href: '/dashboard/products',
+        href: route('products.index.dashboard'),
         icon: LayoutGrid,
     },
 

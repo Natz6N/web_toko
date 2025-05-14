@@ -47,5 +47,17 @@ class DashboardController extends Controller
             'recentTestimonials' => $recentTestimonials
         ]);
     }
+    public function CategoryIndex()
+    {
+        return Inertia::render('Dashboard/Category/index', [
+            'categories' => \App\Models\Categories::all(),
+        ]);
+    }
+    public function ProductIndex()
+    {
+        return Inertia::render('Dashboard/products/index', [
+            'products' => \App\Models\Product::all(),
+        ]);
+    }
 
 }

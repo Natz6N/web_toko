@@ -1,6 +1,6 @@
 import Navbar from "@/components/navbar";
 import Footer from "@/components/Footer";
-import { SectionCarousel, ProductCarousel, TestimonialCarousel } from "@/components/sectionCarousel";
+import { SectionCarousel, ProductCarousel, TestimonialCarousel } from "@/components/Carousel";
 import { BannerItem, Category, Product, Testimonial } from "@/types/index";
 interface IndexProps {
   banners: BannerItem[];

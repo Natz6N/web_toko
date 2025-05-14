@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {

@@ -10,23 +10,27 @@ use App\Http\Controllers\TestimonialsController;
  * Admin Routes
  */
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    // Categories routes (admin)
-    Route::get('/categories', [CategoriesController::class, 'index']);
-    Route::post('/categories', [CategoriesController::class, 'store']);
-    Route::get('/categories/{Categories}', [CategoriesController::class, 'show']);
-    Route::put('/categories/{Categories}', [CategoriesController::class, 'update']);
-    Route::delete('/categories/{Categories}', [CategoriesController::class, 'destroy']);
+    Route::group(['prefix' => 'dashboard'], function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/categories', [DashboardController::class, 'CategoryIndex'])->name('categories.index.dashboard');
+        Route::get('/products', [DashboardController::class, 'ProductIndex'])->name('products.index.dashboard');
+        Route::post('/categories', [CategoriesController::class, 'store'])->name('categories.store.dashboard');
+        Route::post('/categories/create', [CategoriesController::class, 'create'])->name('categories.create.dashboard');
+        Route::post('/categories/edit/{Categories}', [CategoriesController::class, 'edit'])->name('categories.edit.dashboard');
+        Route::get('/categories/{Categories}', [CategoriesController::class, 'show'])->name('categories.show.dashboard');
+        Route::put('/categories/{Categories}', [CategoriesController::class, 'update'])->name('categories.update.dashboard');
+        Route::delete('/categories/{Categories}', [CategoriesController::class, 'destroy'])->name('categories.destroy.dashboard');
 
-    // Products routes (admin)
-    Route::post('/products', [ProductController::class, 'store']);
-    Route::put('/products/{id}', [ProductController::class, 'update']);
-    Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+        // Products routes (admin)
+        Route::post('/products', [ProductController::class, 'store'])->name('products.store.dashboard');
+        Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update.dashboard');
+        Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy.dashboard');
 
-    // Testimonials routes (admin)
-    Route::get('/testimonials/all', [TestimonialsController::class, 'all']);
-    Route::put('/testimonials/{testimonial}', [TestimonialsController::class, 'update']);
-    Route::delete('/testimonials/{testimonial}', [TestimonialsController::class, 'destroy']);
+        // Testimonials routes (admin)
+        Route::get('/testimonials/all', [TestimonialsController::class, 'all'])->name('testimonials.all.dashboard');
+        Route::put('/testimonials/{testimonial}', [TestimonialsController::class, 'update'])->name('testimonials.update.dashboard');
+        Route::delete('/testimonials/{testimonial}', [TestimonialsController::class, 'destroy'])->name('testimonials.destroy.dashboard');
+    });
 });
 
 /*

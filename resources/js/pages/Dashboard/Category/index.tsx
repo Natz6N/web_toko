@@ -43,10 +43,17 @@ import {
   Search,
   FilterX
 } from 'lucide-react';
-
+import AppLayout from '@/layouts/app-layout';
+import { type BreadcrumbItem } from '@/types/index';
 interface CategoryIndexProps {
   categories: Category[];
 }
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Categories',
+        href: route('categories.index.dashboard'),
+    },
+];
 
 export default function CategoryIndex({ categories: initialCategories }: CategoryIndexProps) {
   const [categories, setCategories] = useState<Category[]>(initialCategories);
@@ -96,21 +103,21 @@ export default function CategoryIndex({ categories: initialCategories }: Categor
   };
 
   return (
-    <>
+    <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Categories" />
 
       <div className="container mx-auto p-6">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Categories</h1>
           <Button asChild>
-            <Link href={route('dashboard.categories.create')}>
+            <Link href={route('categories.create.dashboard')}>
               <Plus className="h-4 w-4 mr-2" />
               New Category
             </Link>
           </Button>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
+        <div className="dark:bg-dark rounded-lg shadow p-6 mb-6">
           <div className="flex flex-col md:flex-row gap-4 mb-6">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -178,13 +185,13 @@ export default function CategoryIndex({ categories: initialCategories }: Categor
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem asChild>
-                              <Link href={route('dashboard.categories.show', category.id)}>
+                              <Link href={route('categories.show.dashboard', category.id)}>
                                 <Eye className="h-4 w-4 mr-2" />
                                 View
                               </Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem asChild>
-                              <Link href={route('dashboard.categories.edit', category.id)}>
+                              <Link href={route('categories.edit.dashboard', category.id)}>
                                 <Pencil className="h-4 w-4 mr-2" />
                                 Edit
                               </Link>
@@ -228,6 +235,6 @@ export default function CategoryIndex({ categories: initialCategories }: Categor
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </>
+    </AppLayout>
   );
 }
