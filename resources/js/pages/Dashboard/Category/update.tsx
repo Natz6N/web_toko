@@ -33,7 +33,7 @@ export default function UpdateCategory({ category, parentCategories }: UpdateCat
   const [imagePreview, setImagePreview] = useState<string | null>(category.image || null);
   const [removeCurrentImage, setRemoveCurrentImage] = useState(false);
 
-  const { data, setData, processing, errors } = useForm<{
+  const { data, setData, post, processing, errors } = useForm<{
     name: string;
     slug: string;
     description: string;
@@ -41,6 +41,7 @@ export default function UpdateCategory({ category, parentCategories }: UpdateCat
     status: string;
     image: File | null;
     _method: string;
+    remove_image?: string;
   }>({
     name: category.name,
     slug: category.slug,
@@ -77,18 +78,11 @@ export default function UpdateCategory({ category, parentCategories }: UpdateCat
       formData.append('remove_image', '1');
     }
 
-    // Use Inertia's post method with the form data
-    const url = route('dashboard.categories.update', category.id);
-    const options = {
+    // Use the post method from the useForm hook directly
+    post(route('dashboard.categories.update', category.id), {
       forceFormData: true,
       preserveScroll: true,
       preserveState: true,
-    };
-
-    // @ts-ignore - TypeScript doesn't recognize the formData format properly here
-    useForm().post(url, {
-      ...options,
-      data: formData
     });
   };
 
