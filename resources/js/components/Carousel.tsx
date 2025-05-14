@@ -1,7 +1,7 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
-
+import { router } from '@inertiajs/react';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -198,8 +198,8 @@ function ProductCarousel({ products, title }: ProductCarouselProps) {
                       <span className="font-bold">${product.price}</span>
                     )}
                   </div>
-                  <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition-colors duration-200">
-                    Add to Cart
+                  <button onClick={() => router.visit(product.url)} className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition-colors duration-200">
+                    show product
                   </button>
                 </div>
               }

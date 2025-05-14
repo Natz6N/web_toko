@@ -2,6 +2,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/Footer";
 import { SectionCarousel, ProductCarousel, TestimonialCarousel } from "@/components/Carousel";
 import { BannerItem, Category, Product, Testimonial } from "@/types/index";
+
 interface IndexProps {
   banners: BannerItem[];
   categories: Category[];
@@ -10,6 +11,15 @@ interface IndexProps {
 }
 
 export default function Index({ banners, categories, products, testimonials }: IndexProps) {
+    // Create products array with required properties for ProductCarousel
+    const productItems = products.map(product => ({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image_url || '/images/placeholder-product.jpg',
+        url: `/products/${product.slug}`
+    }));
+
     return (
         <div>
             <Navbar />
@@ -35,7 +45,7 @@ export default function Index({ banners, categories, products, testimonials }: I
 
                 <section className="mb-12">
                     <h2 className="text-2xl font-semibold mb-4">Best Sellers</h2>
-                    <ProductCarousel products={products} />
+                    <ProductCarousel products={productItems} />
                 </section>
 
                 <section className="mb-12">

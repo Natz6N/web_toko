@@ -22,7 +22,16 @@ class ProductController extends Controller
     public function show($slug)
     {
         $product = Product::where('slug', $slug)->firstOrFail();
-        return $product;
+
+        // Get related products - products with same categories or similar price range
+        $relatedProducts = Product::where('id', '!=', $product->id)
+            ->take(4)
+            ->get();
+
+        return Inertia::render('web/showProduct', [
+            'product' => $product,
+            'relatedProducts' => $relatedProducts
+        ]);
     }
 
     // Tampilkan detail produk di dashboard admin
