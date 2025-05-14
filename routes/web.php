@@ -25,7 +25,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Products routes (admin)
         Route::get('/products/{id}', [ProductController::class, 'showDashboard'])->name('products.show.dashboard');
-        Route::get('/products/create', [ProductController::class, 'create'])->name('products.create.dashboard');
         Route::post('/products', [ProductController::class, 'store'])->name('products.store.dashboard');
         Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update.dashboard');
         Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy.dashboard');
@@ -35,6 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/testimonials/{testimonial}', [TestimonialsController::class, 'update'])->name('testimonials.update.dashboard');
         Route::delete('/testimonials/{testimonial}', [TestimonialsController::class, 'destroy'])->name('testimonials.destroy.dashboard');
     });
+    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create.dashboard');
 });
 
 /*

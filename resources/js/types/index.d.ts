@@ -96,6 +96,7 @@ export interface Product {
     stock: number;
     description?: string;
     image?: string;
+    image_url?: string;
     created_at?: string;
     updated_at?: string;
     whatsapp_link?: string;

@@ -18,7 +18,33 @@ export default function CreateProduct() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const dropRef = React.useRef<HTMLLabelElement>(null);
+  const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      setImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
+  const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    if (dropRef.current) {
+      dropRef.current.classList.add('border-blue-500', 'bg-blue-50');
+    }
+  };
+
+  const handleDragLeave = () => {
+    if (dropRef.current) {
+      dropRef.current.classList.remove('border-blue-500', 'bg-blue-50');
+    }
+  };
   const breadcrumbs: BreadcrumbItem[] = [
     {
       title: 'Dashboard',
@@ -213,8 +239,12 @@ export default function CreateProduct() {
                     ) : (
                       <div className="mt-2">
                         <Label
+                          ref={dropRef}
                           htmlFor="image"
                           className="flex flex-col items-center justify-center w-full h-[200px] border-2 border-dashed rounded-md cursor-pointer bg-gray-50 hover:bg-gray-100"
+                          onDrop={handleDrop}
+                          onDragOver={handleDragOver}
+                          onDragLeave={handleDragLeave}
                         >
                           <div className="flex flex-col items-center justify-center pt-5 pb-6">
                             <Upload className="h-10 w-10 text-gray-400 mb-2" />

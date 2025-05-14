@@ -268,9 +268,9 @@ export default function ProductsIndex({ products }: ProductsIndexProps) {
                       <TableRow key={product.id}>
                         <TableCell>
                           <div className="h-10 w-10 rounded-md overflow-hidden bg-gray-100">
-                            {product.image ? (
+                            {product.image_url ? (
                               <img
-                                src={`/storage/${product.image}`}
+                                src={product.image_url}
                                 alt={product.name}
                                 className="h-full w-full object-cover"
                               />
