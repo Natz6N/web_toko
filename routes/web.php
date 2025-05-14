@@ -3,17 +3,14 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\TestimonialsController;
-
 /*
  * Admin Routes
  */
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('Dashboard/index');
-    })->name('dashboard');
-
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     // Categories routes (admin)
     Route::get('/categories', [CategoriesController::class, 'index']);
     Route::post('/categories', [CategoriesController::class, 'store']);
