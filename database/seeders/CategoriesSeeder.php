@@ -1,9 +1,10 @@
 <?php
 
 namespace Database\Seeders;
-
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Categories;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class CategoriesSeeder extends Seeder
 {
@@ -12,6 +13,24 @@ class CategoriesSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $categories = [
+            'Electronics',
+            'Clothing',
+            'Home & Kitchen',
+            'Books',
+            'Smartphones',
+            'Laptops',
+            'Men\'s Clothing',
+            'Women\'s Clothing',
+            'Kitchen Appliances',
+            'Furniture',
+        ];
+
+        foreach ($categories as $name) {
+            Categories::create([
+                'name' => $name,
+                'slug' => Str::slug($name),
+            ]);
+        }
     }
 }
