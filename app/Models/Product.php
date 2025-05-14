@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -12,6 +13,18 @@ class Product extends Model
       protected $fillable = [
         'name', 'slug', 'price', 'stock', 'description', 'image'
     ];
+
+    protected $appends = ['image_url', 'whatsapp_link'];
+
+    // Aksesor untuk URL gambar
+    public function getImageUrlAttribute()
+    {
+        if (!$this->image) {
+            return null;
+        }
+
+        return Storage::disk('public')->url($this->image);
+    }
 
     // Aksesor untuk membuat tautan WhatsApp pemesanan
     public function getWhatsappLinkAttribute()

@@ -14,14 +14,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/categories', [DashboardController::class, 'CategoryIndex'])->name('categories.index.dashboard');
         Route::get('/products', [DashboardController::class, 'ProductIndex'])->name('products.index.dashboard');
+
+        // Categories routes (admin)
         Route::post('/categories', [CategoriesController::class, 'store'])->name('categories.store.dashboard');
         Route::post('/categories/create', [CategoriesController::class, 'create'])->name('categories.create.dashboard');
         Route::post('/categories/edit/{Categories}', [CategoriesController::class, 'edit'])->name('categories.edit.dashboard');
-        Route::get('/categories/{Categories}', [CategoriesController::class, 'show'])->name('categories.show.dashboard');
+        Route::get('/categories/{Categories}', [CategoriesController::class, 'showDashboard'])->name('categories.show.dashboard');
         Route::put('/categories/{Categories}', [CategoriesController::class, 'update'])->name('categories.update.dashboard');
         Route::delete('/categories/{Categories}', [CategoriesController::class, 'destroy'])->name('categories.destroy.dashboard');
 
         // Products routes (admin)
+        Route::get('/products/{id}', [ProductController::class, 'showDashboard'])->name('products.show.dashboard');
+        Route::get('/products/create', [ProductController::class, 'create'])->name('products.create.dashboard');
         Route::post('/products', [ProductController::class, 'store'])->name('products.store.dashboard');
         Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update.dashboard');
         Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy.dashboard');

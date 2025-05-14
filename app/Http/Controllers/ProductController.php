@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 
@@ -23,6 +25,21 @@ class ProductController extends Controller
         return $product;
     }
 
+    // Tampilkan detail produk di dashboard admin
+    public function showDashboard($id)
+    {
+        $product = Product::findOrFail($id);
+        return Inertia::render('Dashboard/Products/show', [
+            'product' => $product
+        ]);
+    }
+
+    // Tampilkan form untuk membuat produk baru
+    public function create()
+    {
+        return Inertia::render('Dashboard/Products/create');
+    }
+
     // Simpan produk baru (admin)
     public function store(Request $request)
     {
@@ -31,7 +48,7 @@ class ProductController extends Controller
             'price'       => 'required|numeric',
             'stock'       => 'required|integer',
             'description' => 'nullable|string',
-            'image'       => 'nullable|image',
+            'image'       => 'nullable|image|max:2048',
         ]);
 
         // Generate slug dari nama produk
@@ -39,7 +56,7 @@ class ProductController extends Controller
 
         // Simpan file gambar jika ada
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('products', 'public');
+            $validated['image'] = Storage::disk('public')->put('products', $request->file('image'));
         }
 
         $product = Product::create($validated);
@@ -56,7 +73,7 @@ class ProductController extends Controller
             'price'       => 'sometimes|required|numeric',
             'stock'       => 'sometimes|required|integer',
             'description' => 'nullable|string',
-            'image'       => 'nullable|image',
+            'image'       => 'nullable|image|max:2048',
         ]);
 
         // Jika nama berubah, perbarui slug
@@ -66,7 +83,12 @@ class ProductController extends Controller
 
         // Update file gambar jika ada
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('products', 'public');
+            // Hapus gambar lama jika ada
+            if ($product->image && Storage::disk('public')->exists($product->image)) {
+                Storage::disk('public')->delete($product->image);
+            }
+
+            $validated['image'] = Storage::disk('public')->put('products', $request->file('image'));
         }
 
         $product->update($validated);
@@ -77,6 +99,12 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
+
+        // Hapus gambar jika ada
+        if ($product->image && Storage::disk('public')->exists($product->image)) {
+            Storage::disk('public')->delete($product->image);
+        }
+
         $product->delete();
         return response()->json(['message' => 'Produk dihapus'], 200);
     }

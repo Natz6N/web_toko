@@ -55,7 +55,7 @@ class DashboardController extends Controller
     }
     public function ProductIndex()
     {
-        return Inertia::render('Dashboard/products/index', [
+        return Inertia::render('Dashboard/Products/index', [
             'products' => \App\Models\Product::all(),
         ]);
     }

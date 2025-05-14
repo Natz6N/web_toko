@@ -90,10 +90,15 @@ export interface Category {
 
 export interface Product {
     id: number;
-    image: string;
     name: string;
-    price: string | number;
-    discountPrice?: string | number;
+    slug: string;
+    price: number;
+    stock: number;
+    description?: string;
+    image?: string;
+    created_at?: string;
+    updated_at?: string;
+    whatsapp_link?: string;
 }
 
 export interface Testimonial {

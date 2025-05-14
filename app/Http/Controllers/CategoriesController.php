@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCategoriesRequest;
 use App\Http\Requests\UpdateCategoriesRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class CategoriesController extends Controller
 {
@@ -28,6 +29,15 @@ class CategoriesController extends Controller
     // Tampilkan detail kategori (publik/admin)
     public function show(Categories $Categories) {
         return $Categories;
+    }
+
+    // Tampilkan detail kategori di dashboard admin
+    public function showDashboard(Categories $Categories) {
+        // Get products in this category if needed
+        // Assuming there's a relationship between categories and products
+        return Inertia::render('Dashboard/Category/show', [
+            'category' => $Categories,
+        ]);
     }
 
     // Update kategori (admin)
