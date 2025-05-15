@@ -99,7 +99,7 @@ export default function Card({
 
           {title && <h3 className="font-medium text-lg mb-1 text-gray-900 dark:text-white">{title}</h3>}
           {subtitle && <h4 className="text-sm text-gray-600 dark:text-gray-300 mb-2">{subtitle}</h4>}
-          {description && <p className="text-gray-700 dark:text-gray-400 text-sm">{description}</p>}
+          {description && <p className="text-gray-700 dark:text-gray-400 text-sm">{description.slice(0, 300) + '...'}</p>}
           {children && <div className="mt-3">{children}</div>}
         </div>
       </div>

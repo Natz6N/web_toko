@@ -73,9 +73,9 @@ export default function ShowProduct({ product }: { product: Product }) {
           {/* Product image */}
           <div className="md:col-span-1">
             <Card className="overflow-hidden">
-              {product.image_url ? (
+              {product.image ? (
                 <img
-                  src={product.image_url}
+                  src={'/storage/' + product.image}
                   alt={product.name}
                   className="w-full h-auto object-cover aspect-square"
                 />

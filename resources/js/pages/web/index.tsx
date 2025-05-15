@@ -2,6 +2,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/Footer";
 import { SectionCarousel, ProductCarousel, TestimonialCarousel } from "@/components/Carousel";
 import { BannerItem, Category, Product, Testimonial } from "@/types/index";
+import FlashToaster from "@/components/FlashToaster";
 
 interface IndexProps {
   banners: BannerItem[];
@@ -16,13 +17,14 @@ export default function Index({ banners, categories, products, testimonials }: I
         id: product.id,
         name: product.name,
         price: product.price,
-        image: product.image_url || '/images/placeholder-product.jpg',
+        image: '/storage/' + product.image || '/images/placeholder-product.jpg',
         url: `/products/${product.slug}`
     }));
 
     return (
         <div>
             <Navbar />
+            <FlashToaster />
             <div className="container mx-auto px-4 py-8">
                 <h1 className="text-3xl font-bold text-center mb-6">Welcome to My E-commerce Site</h1>
                 <p className="mt-2 mb-8 text-center">Shop the latest products and enjoy exclusive deals!</p>

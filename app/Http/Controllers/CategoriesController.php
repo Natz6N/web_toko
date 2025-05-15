@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\Categories;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreCategoriesRequest;
 use App\Http\Requests\UpdateCategoriesRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Inertia\Inertia;
 
 class CategoriesController extends Controller
 {
@@ -18,12 +18,18 @@ class CategoriesController extends Controller
 
     // Simpan kategori baru (admin)
     public function store(Request $request) {
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'slug' => 'required|string|unique:categories,slug',
-        ]);
-        $Categories = Categories::create($validated);
-        return response()->json($Categories, 201);
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string',
+                'slug' => 'required|string|unique:categories,slug',
+            ]);
+
+            $category = Categories::create($validated);
+
+            return redirect()->back()->with('success', "Kategori '{$category->name}' berhasil ditambahkan.");
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menambahkan kategori: ' . $e->getMessage());
+        }
     }
 
     // Tampilkan detail kategori (publik/admin)
@@ -42,17 +48,29 @@ class CategoriesController extends Controller
 
     // Update kategori (admin)
     public function update(Request $request, Categories $Categories) {
-        $validated = $request->validate([
-            'name' => 'sometimes|required|string',
-            'slug' => 'sometimes|required|string|unique:categories,slug,' . $Categories->id,
-        ]);
-        $Categories->update($validated);
-        return response()->json($Categories);
+        try {
+            $validated = $request->validate([
+                'name' => 'sometimes|required|string',
+                'slug' => 'sometimes|required|string|unique:categories,slug,' . $Categories->id,
+            ]);
+
+            $Categories->update($validated);
+
+            return redirect()->back()->with('success', "Kategori '{$Categories->name}' berhasil diperbarui.");
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal memperbarui kategori: ' . $e->getMessage());
+        }
     }
 
     // Hapus kategori (admin)
     public function destroy(Categories $Categories) {
-        $Categories->delete();
-        return response()->noContent();
+        try {
+            $categoryName = $Categories->name;
+            $Categories->delete();
+
+            return redirect()->route('categories.index.dashboard')->with('success', "Kategori '{$categoryName}' berhasil dihapus.");
+        } catch (\Exception $e) {
+            return redirect()->route('categories.index.dashboard')->with('error', 'Gagal menghapus kategori: ' . $e->getMessage());
+        }
     }
 }

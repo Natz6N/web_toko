@@ -72,7 +72,7 @@ export default function Dashboard() {
                                 {recentProducts.map((product: Product) => (
                                     <div key={product.id} className="flex items-center gap-3 border-b pb-3">
                                         {product.image ? (
-                                            <img src={product.image} alt={product.name} className="h-10 w-10 rounded object-cover" />
+                                            <img src={'/storage/' + product.image} alt={product.name} className="h-10 w-10 rounded object-cover" />
                                         ) : (
                                             <div className="h-10 w-10 rounded bg-gray-100 flex items-center justify-center">
                                                 <PlaceholderPattern className="h-8 w-8 stroke-neutral-900/20 dark:stroke-neutral-100/20" />

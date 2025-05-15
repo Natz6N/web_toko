@@ -50,71 +50,73 @@ class ProductController extends Controller
     }
 
     // Simpan produk baru (admin)
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        $validated = $request->validate([
-            'name'        => 'required|string',
-            'price'       => 'required|numeric',
-            'stock'       => 'required|integer',
-            'description' => 'nullable|string',
-            'image'       => 'nullable|image|max:2048',
-        ]);
+        try {
+            $validated = $request->validated();
 
-        // Generate slug dari nama produk
-        $validated['slug'] = Str::slug($validated['name']);
+            // Generate slug dari nama produk
+            $validated['slug'] = Str::slug($validated['name']);
 
-        // Simpan file gambar jika ada
-        if ($request->hasFile('image')) {
-            $validated['image'] = Storage::disk('public')->put('products', $request->file('image'));
+            // Simpan file gambar jika ada
+            if ($request->hasFile('image')) {
+                $validated['image'] = Storage::disk('public')->put('products', $request->file('image'));
+            }
+
+            $product = Product::create($validated);
+
+            return redirect()->back()->with('success', "Produk '{$product->name}' berhasil ditambahkan.");
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menambahkan produk: ' . $e->getMessage());
         }
-
-        $product = Product::create($validated);
-        return response()->json($product, 201);
     }
 
     // Update produk (admin)
-    public function update(Request $request, $id)
+    public function update(UpdateProductRequest $request, $id)
     {
-        $product = Product::findOrFail($id);
+        try {
+            $product = Product::findOrFail($id);
+            $validated = $request->validated();
 
-        $validated = $request->validate([
-            'name'        => 'sometimes|required|string',
-            'price'       => 'sometimes|required|numeric',
-            'stock'       => 'sometimes|required|integer',
-            'description' => 'nullable|string',
-            'image'       => 'nullable|image|max:2048',
-        ]);
-
-        // Jika nama berubah, perbarui slug
-        if (isset($validated['name'])) {
-            $validated['slug'] = Str::slug($validated['name']);
-        }
-
-        // Update file gambar jika ada
-        if ($request->hasFile('image')) {
-            // Hapus gambar lama jika ada
-            if ($product->image && Storage::disk('public')->exists($product->image)) {
-                Storage::disk('public')->delete($product->image);
+            // Jika nama berubah, perbarui slug
+            if (isset($validated['name'])) {
+                $validated['slug'] = Str::slug($validated['name']);
             }
 
-            $validated['image'] = Storage::disk('public')->put('products', $request->file('image'));
-        }
+            // Update file gambar jika ada
+            if ($request->hasFile('image')) {
+                // Hapus gambar lama jika ada
+                if ($product->image && Storage::disk('public')->exists($product->image)) {
+                    Storage::disk('public')->delete($product->image);
+                }
 
-        $product->update($validated);
-        return response()->json($product, 200);
+                $validated['image'] = Storage::disk('public')->put('products', $request->file('image'));
+            }
+
+            $product->update($validated);
+
+            return redirect()->back()->with('success', "Produk '{$product->name}' berhasil diperbarui.");
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal memperbarui produk: ' . $e->getMessage());
+        }
     }
 
     // Hapus produk (admin)
     public function destroy($id)
     {
-        $product = Product::findOrFail($id);
+        try {
+            $product = Product::findOrFail($id);
+            $productName = $product->name;
 
-        // Hapus gambar jika ada
-        if ($product->image && Storage::disk('public')->exists($product->image)) {
-            Storage::disk('public')->delete($product->image);
+            // Hapus gambar jika ada
+            if ($product->image && Storage::disk('public')->exists($product->image)) {
+                Storage::disk('public')->delete($product->image);
+            }
+
+            $product->delete();
+            return redirect()->route('products.index.dashboard')->with('success', "Produk '{$productName}' berhasil dihapus.");
+        } catch (\Exception $e) {
+            return redirect()->route('products.index.dashboard')->with('error', 'Gagal menghapus produk: ' . $e->getMessage());
         }
-
-        $product->delete();
-        return response()->json(['message' => 'Produk dihapus'], 200);
     }
 }
