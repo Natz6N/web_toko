@@ -1,11 +1,9 @@
-Berikut adalah contoh `README.md` yang profesional, rapi, dan sesuai untuk proyek Laravel + Breeze + Inertia + React TypeScript milikmu:
 
-````md
 # 🛒 Simple Store with Laravel Breeze, Inertia, React + TypeScript
 
 Project ini dibuat oleh **Natz** sebagai toko sederhana berbasis web. Fitur utama dari project ini adalah **CRUD Produk** dan opsi untuk melakukan pembelian melalui **tautan WhatsApp**.
 
----
+
 
 ## 🚀 Tech Stack
 
@@ -15,7 +13,7 @@ Project ini dibuat oleh **Natz** sebagai toko sederhana berbasis web. Fitur utam
 - [React (TypeScript)](https://reactjs.org/) - Frontend Framework
 - [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS Framework
 
----
+
 
 ## ⚙️ How to Install
 
