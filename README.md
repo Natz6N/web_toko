@@ -13,7 +13,7 @@ A modern e-commerce admin dashboard built with Laravel and React.
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/ecommerce-admin.git
+git clone https://github.com/Natz6N/web_toko.git
 cd ecommerce-admin
 ```
 
