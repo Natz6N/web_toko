@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('password123'), // gunakan Hash::make untuk enkripsi password
             'remember_token' => Str::random(10),
-        ]);
+    ]);
         // Run our custom seeders
         $this->call([
             CategoriesSeeder::class,

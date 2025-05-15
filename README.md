@@ -1,94 +1,73 @@
-# Laravel E-commerce Admin Dashboard
+Berikut adalah contoh `README.md` yang profesional, rapi, dan sesuai untuk proyek Laravel + Breeze + Inertia + React TypeScript milikmu:
 
-A modern e-commerce admin dashboard built with Laravel and React.
+````md
+# 🛒 Simple Store with Laravel Breeze, Inertia, React + TypeScript
 
-## Features
+Project ini dibuat oleh **Natz** sebagai toko sederhana berbasis web. Fitur utama dari project ini adalah **CRUD Produk** dan opsi untuk melakukan pembelian melalui **tautan WhatsApp**.
 
-- Product management with image uploads
-- Category management
-- Admin dashboard with statistics
-- Beautiful UI built with React and Tailwind CSS
+---
 
-## Setup Instructions
+## 🚀 Tech Stack
 
-1. Clone the repository
+- [Laravel](https://laravel.com/) - Backend & Routing
+- [Laravel Breeze](https://laravel.com/docs/starter-kits#breeze) - Auth Starter Kit
+- [Inertia.js](https://inertiajs.com/) - Bridge antara Laravel dan React
+- [React (TypeScript)](https://reactjs.org/) - Frontend Framework
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS Framework
+
+---
+
+## ⚙️ How to Install
+
 ```bash
-git clone https://github.com/Natz6N/web_toko.git
-cd ecommerce-admin
-```
+# Clone project
+git clone https://github.com/username/nama-project.git
+cd nama-project
 
-2. Install PHP dependencies
-```bash
+# Install dependencies
 composer install
-```
-
-3. Install JavaScript dependencies
-```bash
 npm install
-```
 
-4. Create `.env` file
-```bash
+# Copy .env
 cp .env.example .env
-```
 
-5. Generate application key
-```bash
+# Generate key
 php artisan key:generate
-```
 
-6. Set up database in `.env` file
-```
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=ecommerce_admin
-DB_USERNAME=root
-DB_PASSWORD=
-```
+# Migrate database
+php artisan migrate
 
-7. Run migrations and seed the database
-```bash
-php artisan migrate --seed
-```
-
-8. Create symbolic link for storage
-```bash
-php artisan storage:link
-```
-
-9. Build assets
-```bash
-npm run build
-```
-
-10. Start the development server
-```bash
-php artisan serve
-```
-
-## File Upload Configuration
-
-The application is configured to store uploaded files in the `storage/app/public` directory. The `storage:link` command creates a symbolic link from `public/storage` to `storage/app/public`, making the files accessible from the web.
-
-If you're experiencing issues with file uploads, please check:
-
-1. The `storage:link` command has been run
-2. The storage directory permissions are set correctly
-3. The disk configuration in `config/filesystems.php` is correctly set to use the `public` disk
-
-## Development
-
-For development, you can use:
-
-```bash
-# Run the Laravel server
-php artisan serve
-
-# Watch for front-end changes
+# Run dev server
 npm run dev
+php artisan serve
+````
+
+---
+
+## 📦 Fitur
+
+* CRUD Produk (Create, Read, Update, Delete)
+* Integrasi WhatsApp untuk pembelian cepat
+* UI responsif menggunakan Tailwind CSS
+* Authentikasi menggunakan Laravel Breeze
+
+---
+
+## 📄 License
+
+Project ini menggunakan lisensi **MIT**. Silakan gunakan, modifikasi, atau distribusikan sesuai kebutuhan.
+
+---
+
+## 📝 Keterangan Tambahan
+
+* Kamu dapat mengkustomisasi link WhatsApp untuk produk di bagian frontend.
+* Belum ada fitur keranjang atau pembayaran otomatis, karena konsepnya adalah toko sederhana dengan komunikasi via WhatsApp.
+* Project ini cocok untuk pembelajaran Laravel + React + Inertia, atau untuk toko kecil-kecilan berbasis web.
+
+---
+
+> Feel free to fork or contribute!
+> Dibuat dengan ❤️ oleh Natz
+
 ```
-
-## License
-
-This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT). 
