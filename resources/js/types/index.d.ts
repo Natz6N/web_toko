@@ -65,6 +65,7 @@ interface Testimonial {
     name: string;
     role: string;
     content: string;
+    rating?: number;
 }
 
 export interface BannerItem {
@@ -109,6 +110,7 @@ export interface Testimonial {
     name: string;
     role: string;
     content: string;
+    rating?: number;
 }
 
 
