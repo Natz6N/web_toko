@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import { Product } from '@/types';
+import FlashToaster from '@/components/FlashToaster';
 import {
   Table,
   TableBody,
@@ -41,7 +42,7 @@ import {
   ShoppingBag
 } from 'lucide-react';
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem } from '@/types/index';
+import { BreadcrumbItem  } from '@/types/index';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 
@@ -117,10 +118,15 @@ export default function ProductsIndex({ products }: ProductsIndexProps) {
   const handleDelete = () => {
     if (productToDelete) {
       router.delete(route('products.destroy.dashboard', { id: productToDelete }), {
+        preserveScroll: true,
+        preserveState: true,
         onSuccess: () => {
           setDeleteConfirm(false);
           setProductToDelete(null);
         },
+        onError: (errors: Record<string, string>) => {
+          console.error('Error deleting product:', errors);
+        }
       });
     }
   };
@@ -139,6 +145,7 @@ export default function ProductsIndex({ products }: ProductsIndexProps) {
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
+      <FlashToaster />
       <Head title="Products" />
 
       <div className="p-6">
@@ -312,7 +319,7 @@ export default function ProductsIndex({ products }: ProductsIndexProps) {
                                 <Eye className="h-4 w-4" />
                               </Button>
                             </Link>
-                            <Link href={`/dashboard/products/edit/${product.id}`}>
+                            <Link href={route('products.edit.dashboard', { id: product.id })}>
                               <Button variant="outline" size="sm" className="h-8 w-8 p-0">
                                 <span className="sr-only">Edit</span>
                                 <Pencil className="h-4 w-4" />

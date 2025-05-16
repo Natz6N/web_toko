@@ -24,6 +24,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/categories/{Categories}', [CategoriesController::class, 'destroy'])->name('categories.destroy.dashboard');
 
         // Products routes (admin)
+        Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('products.edit.dashboard');
         Route::get('/products/{id}', [ProductController::class, 'showDashboard'])->name('products.show.dashboard');
         Route::post('/products', [ProductController::class, 'store'])->name('products.store.dashboard');
         Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update.dashboard');
@@ -43,7 +44,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Products public routes
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{slug}', [ProductController::class, 'show']);
-
+Route::get('/browse', [ProductController::class, 'browse'])->name('products.browse');
 // Testimonials public routes
 Route::get('/testimonials', [TestimonialsController::class, 'index']);
 Route::post('/testimonials', [TestimonialsController::class, 'store']);

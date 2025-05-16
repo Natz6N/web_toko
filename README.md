@@ -68,4 +68,3 @@ Project ini menggunakan lisensi **MIT**. Silakan gunakan, modifikasi, atau distr
 > Feel free to fork or contribute!
 > Dibuat dengan ❤️ oleh Natz
 
-```

@@ -9,5 +9,11 @@ class Categories extends Model
 {
     /** @use HasFactory<\Database\Factories\CategoriesFactory> */
     use HasFactory;
-    protected $fillable = ['name', 'slug'];
+    protected $fillable = ['name', 'slug', 'status'];
+
+    // Relationship with Products
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id');
+    }
 }

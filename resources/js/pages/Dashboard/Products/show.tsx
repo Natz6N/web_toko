@@ -55,7 +55,7 @@ export default function ShowProduct({ product }: { product: Product }) {
                 Back to List
               </Button>
             </Link>
-            <Link href={`/dashboard/products/edit/${product.id}`}>
+            <Link href={route('products.edit.dashboard', { id: product.id })}>
               <Button size="sm" className="flex items-center">
                 <Edit className="h-4 w-4 mr-1" />
                 Edit

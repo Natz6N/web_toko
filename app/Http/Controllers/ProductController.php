@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\Product;
+use App\Models\Categories;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreProductRequest;
+
 use App\Http\Requests\UpdateProductRequest;
 
 class ProductController extends Controller
@@ -46,7 +48,22 @@ class ProductController extends Controller
     // Tampilkan form untuk membuat produk baru
     public function create()
     {
-        return Inertia::render('Dashboard/Products/create');
+        $categories = Categories::all();
+        return Inertia::render('Dashboard/Products/create', [
+            'categories' => $categories
+        ]);
+    }
+
+    // Tampilkan form untuk mengedit produk
+    public function edit($id)
+    {
+        $product = Product::findOrFail($id);
+        $categories = Categories::all();
+
+        return Inertia::render('Dashboard/Products/update', [
+            'product' => $product,
+            'categories' => $categories
+        ]);
     }
 
     // Simpan produk baru (admin)
@@ -65,9 +82,9 @@ class ProductController extends Controller
 
             $product = Product::create($validated);
 
-            return redirect()->back()->with('success', "Produk '{$product->name}' berhasil ditambahkan.");
+            return redirect()->route('products.index.dashboard')->with('success', "Produk '{$product->name}' berhasil ditambahkan.");
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menambahkan produk: ' . $e->getMessage());
+            return redirect()->route('products.index.dashboard')->with('error', 'Gagal menambahkan produk: ' . $e->getMessage());
         }
     }
 
@@ -95,9 +112,9 @@ class ProductController extends Controller
 
             $product->update($validated);
 
-            return redirect()->back()->with('success', "Produk '{$product->name}' berhasil diperbarui.");
+            return redirect()->route('products.index.dashboard')->with('success', "Produk '{$product->name}' berhasil diperbarui.");
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal memperbarui produk: ' . $e->getMessage());
+            return redirect()->route('products.index.dashboard')->with('error', 'Gagal memperbarui produk: ' . $e->getMessage());
         }
     }
 
@@ -118,5 +135,34 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('products.index.dashboard')->with('error', 'Gagal menghapus produk: ' . $e->getMessage());
         }
+    }
+
+    public function browse(Request $request)
+    {
+        $query = Product::with('category');
+
+        if ($request->filled('category')) {
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('slug', $request->category);
+            });
+        }
+
+        if ($request->filled('search')) {
+            $searchTerm = '%' . $request->search . '%';
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('name', 'like', $searchTerm)
+                  ->orWhere('description', 'like', $searchTerm)
+                  ->orWhere('slug', 'like', $searchTerm);
+            });
+        }
+
+        $products = $query->get();
+        $categories = Categories::all();
+
+        return Inertia::render('web/Browse', [
+            'products' => $products,
+            'categories' => $categories,
+            'filters' => $request->only(['category', 'search']),
+        ]);
     }
 }

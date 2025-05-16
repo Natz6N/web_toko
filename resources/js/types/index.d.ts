@@ -14,14 +14,12 @@ export interface NavGroup {
     title: string;
     items: NavItem[];
 }
-
 export interface NavItem {
     title: string;
     href: string;
     icon?: LucideIcon | null;
     isActive?: boolean;
 }
-
 export interface SharedData {
     name: string;
     quote: { message: string; author: string };
@@ -77,16 +75,12 @@ export interface BannerItem {
 }
 
 export interface Category {
-    id: number;
-    name: string;
-    slug: string;
-    description?: string;
-    image?: string;
-    parent_id?: number | null;
-    status: 'active' | 'inactive';
-    created_at?: string;
-    updated_at?: string;
+  id: number;
+  name: string;
+  slug: string;
+  status: string;
 }
+
 
 export interface Product {
     id: number;
@@ -99,6 +93,8 @@ export interface Product {
     image_url?: string;
     created_at?: string;
     updated_at?: string;
+    category?: Category;
+    category_id?: number;
     whatsapp_link?: string;
 }
 
@@ -109,3 +105,5 @@ export interface Testimonial {
     role: string;
     content: string;
 }
+
+
