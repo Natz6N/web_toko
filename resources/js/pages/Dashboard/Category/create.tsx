@@ -23,6 +23,7 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { FileUploader } from '@/components/FileUploader';
 import { X } from 'lucide-react';
+import FlashToaster from '@/components/FlashToaster';
 
 interface CreateCategoryProps {
   parentCategories?: Category[];
@@ -49,7 +50,7 @@ export default function CreateCategory({ parentCategories = [] }: CreateCategory
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post(route('dashboard.categories.store'));
+    post(route('categories.store.dashboard'));
   };
 
   const generateSlug = () => {
@@ -83,6 +84,7 @@ export default function CreateCategory({ parentCategories = [] }: CreateCategory
   return (
     <>
       <Head title="Create Category" />
+      <FlashToaster />
 
       <div className="container mx-auto p-6">
         <div className="mb-6">
@@ -159,14 +161,14 @@ export default function CreateCategory({ parentCategories = [] }: CreateCategory
                   <div className="space-y-2">
                     <Label htmlFor="parent">Parent Category</Label>
                     <Select
-                      value={data.parent_id || ''}
-                      onValueChange={(value) => setData('parent_id', value || null)}
+                      value={data.parent_id || 'none'}
+                      onValueChange={(value) => setData('parent_id', value === 'none' ? null : value)}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="No parent category" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">No parent category</SelectItem>
+                        <SelectItem value="none">No parent category</SelectItem>
                         {parentCategories.map((category) => (
                           <SelectItem key={category.id} value={String(category.id)}>
                             {category.name}

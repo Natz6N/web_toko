@@ -45,6 +45,8 @@ import {
 } from 'lucide-react';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types/index';
+import FlashToaster from '@/components/FlashToaster';
+
 interface CategoryIndexProps {
   categories: Category[];
 }
@@ -88,7 +90,7 @@ export default function CategoryIndex({ categories: initialCategories }: Categor
 
   const confirmDelete = () => {
     if (categoryToDelete) {
-      router.delete(route('dashboard.categories.destroy', categoryToDelete.id), {
+      router.delete(route('categories.destroy.dashboard', categoryToDelete.id), {
         onSuccess: () => {
           setDeleteDialogOpen(false);
           setCategoryToDelete(null);
@@ -105,6 +107,7 @@ export default function CategoryIndex({ categories: initialCategories }: Categor
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Categories" />
+      <FlashToaster />
 
       <div className="container mx-auto p-6">
         <div className="flex justify-between items-center mb-6">

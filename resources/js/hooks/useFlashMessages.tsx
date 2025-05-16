@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { usePage } from '@inertiajs/react';
-import { useToast } from '@/contexts/ToastContext';
+import { toast } from 'react-toastify';
 
 type FlashType = 'success' | 'error' | 'warning' | 'info';
 
@@ -17,15 +17,14 @@ interface PageProps {
 export function useFlashMessages() {
   const { props } = usePage();
   const flash = props.flash as PageProps['flash'];
-  const { addToast } = useToast();
 
   useEffect(() => {
     const flashTypes: FlashType[] = ['success', 'error', 'warning', 'info'];
 
     flashTypes.forEach(type => {
       if (flash && flash[type]) {
-        addToast(flash[type] as string, type);
+        toast[type](flash[type] as string);
       }
     });
-  }, [flash, addToast]);
+  }, [flash]);
 }

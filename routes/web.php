@@ -2,6 +2,7 @@
 
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoriesController;
@@ -17,8 +18,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Categories routes (admin)
         Route::post('/categories', [CategoriesController::class, 'store'])->name('categories.store.dashboard');
-        Route::post('/categories/create', [CategoriesController::class, 'create'])->name('categories.create.dashboard');
-        Route::post('/categories/edit/{Categories}', [CategoriesController::class, 'edit'])->name('categories.edit.dashboard');
+        Route::get('/categories/create', [CategoriesController::class, 'create'])->name('categories.create.dashboard');
+        Route::get('/categories/edit/{Categories}', [CategoriesController::class, 'edit'])->name('categories.edit.dashboard');
         Route::get('/categories/{Categories}', [CategoriesController::class, 'showDashboard'])->name('categories.show.dashboard');
         Route::put('/categories/{Categories}', [CategoriesController::class, 'update'])->name('categories.update.dashboard');
         Route::delete('/categories/{Categories}', [CategoriesController::class, 'destroy'])->name('categories.destroy.dashboard');

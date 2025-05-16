@@ -23,13 +23,14 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { FileUploader } from '@/components/FileUploader';
 import { X } from 'lucide-react';
+import FlashToaster from '@/components/FlashToaster';
 
 interface UpdateCategoryProps {
   category: Category;
-  parentCategories: Category[];
+  parentCategories?: Category[];
 }
 
-export default function UpdateCategory({ category, parentCategories }: UpdateCategoryProps) {
+export default function UpdateCategory({ category, parentCategories = [] }: UpdateCategoryProps) {
   const [imagePreview, setImagePreview] = useState<string | null>(category.image || null);
   const [removeCurrentImage, setRemoveCurrentImage] = useState(false);
 
@@ -46,7 +47,7 @@ export default function UpdateCategory({ category, parentCategories }: UpdateCat
     name: category.name,
     slug: category.slug,
     description: category.description || '',
-    parent_id: category.parent_id ? String(category.parent_id) : null,
+    parent_id: category.parent_id ? String(category.parent_id) : 'none',
     status: category.status,
     image: null,
     _method: 'PUT',
@@ -79,7 +80,7 @@ export default function UpdateCategory({ category, parentCategories }: UpdateCat
     }
 
     // Use the post method from the useForm hook directly
-    post(route('dashboard.categories.update', category.id), {
+    post(route('categories.update.dashboard', category.id), {
       forceFormData: true,
       preserveScroll: true,
       preserveState: true,
@@ -123,6 +124,7 @@ export default function UpdateCategory({ category, parentCategories }: UpdateCat
   return (
     <>
       <Head title={`Edit Category: ${category.name}`} />
+      <FlashToaster />
 
       <div className="container mx-auto p-6">
         <div className="mb-6">
@@ -194,14 +196,14 @@ export default function UpdateCategory({ category, parentCategories }: UpdateCat
                   <div className="space-y-2">
                     <Label htmlFor="parent">Parent Category</Label>
                     <Select
-                      value={data.parent_id || ''}
-                      onValueChange={(value) => setData('parent_id', value || null)}
+                      value={data.parent_id || 'none'}
+                      onValueChange={(value) => setData('parent_id', value === 'none' ? null : value)}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="No parent category" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">No parent category</SelectItem>
+                        <SelectItem value="none">No parent category</SelectItem>
                         {availableParentCategories.map((parent) => (
                           <SelectItem key={parent.id} value={String(parent.id)}>
                             {parent.name}

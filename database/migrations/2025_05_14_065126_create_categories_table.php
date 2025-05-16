@@ -15,7 +15,18 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
+            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->text('description')->nullable();
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->timestamps();
+        });
+
+        // Add the foreign key constraint after the table exists
+        Schema::table('categories', function (Blueprint $table) {
+            $table->foreign('parent_id')
+                  ->references('id')
+                  ->on('categories')
+                  ->onDelete('set null');
         });
     }
 

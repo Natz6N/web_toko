@@ -49,8 +49,28 @@ class DashboardController extends Controller
     }
     public function CategoryIndex()
     {
+        $categories = Categories::with('parent')->get();
+
+        // Format data for the frontend
+        $formattedCategories = $categories->map(function ($category) {
+            return [
+                'id' => $category->id,
+                'name' => $category->name,
+                'slug' => $category->slug,
+                'status' => $category->status ?? 'active',
+                'description' => $category->description,
+                'parent_id' => $category->parent_id,
+                'created_at' => $category->created_at,
+                'updated_at' => $category->updated_at,
+                'parent' => $category->parent ? [
+                    'id' => $category->parent->id,
+                    'name' => $category->parent->name,
+                ] : null
+            ];
+        });
+
         return Inertia::render('Dashboard/Category/index', [
-            'categories' => \App\Models\Categories::all(),
+            'categories' => $formattedCategories,
         ]);
     }
     public function ProductIndex()

@@ -1,9 +1,7 @@
 import AppLayoutTemplate from '@/layouts/app/app-sidebar-layout';
 import { type BreadcrumbItem } from '@/types';
 import { type ReactNode } from 'react';
-import { useFlashMessages } from '@/hooks/useFlashMessages';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import ToastNotifier from '@/components/ui/ToastNotifier';
 
 interface AppLayoutProps {
     children: ReactNode;
@@ -11,13 +9,10 @@ interface AppLayoutProps {
 }
 
 export default function AppLayout({ children, breadcrumbs, ...props }: AppLayoutProps) {
-    // Add flash message handling
-    useFlashMessages();
-
     return (
         <AppLayoutTemplate breadcrumbs={breadcrumbs} {...props}>
+            <ToastNotifier />
             {children}
-            <ToastContainer />
         </AppLayoutTemplate>
     );
 }

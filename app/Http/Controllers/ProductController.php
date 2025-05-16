@@ -70,55 +70,67 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         try {
-            $validated = $request->validated();
+            $validatedData = $request->validated();
+            
+            // Generate slug from product name
+            $validatedData['slug'] = Str::slug($validatedData['name']);
 
-            // Generate slug dari nama produk
-            $validated['slug'] = Str::slug($validated['name']);
-
-            // Simpan file gambar jika ada
+            // Handle image upload if present
             if ($request->hasFile('image')) {
-                $validated['image'] = Storage::disk('public')->put('products', $request->file('image'));
+                $path = $request->file('image')->store('products', 'public');
+                $validatedData['image'] = $path;
             }
 
-            $product = Product::create($validated);
+            // Create new product
+            Product::create($validatedData);
 
-            return redirect()->route('products.index.dashboard')->with('success', "Produk '{$product->name}' berhasil ditambahkan.");
+            // Return with success flash message
+            return redirect()->route('products.index.dashboard')
+                ->with('success', "Product '{$validatedData['name']}' has been created successfully!");
         } catch (\Exception $e) {
-            return redirect()->route('products.index.dashboard')->with('error', 'Gagal menambahkan produk: ' . $e->getMessage());
+            // Return with error flash message
+            return redirect()->route('products.index.dashboard')
+                ->with('error', 'Failed to create product: ' . $e->getMessage());
         }
     }
 
-    // Update produk (admin)
+    // Update an existing product (admin)
     public function update(UpdateProductRequest $request, $id)
     {
         try {
             $product = Product::findOrFail($id);
-            $validated = $request->validated();
-
-            // Jika nama berubah, perbarui slug
-            if (isset($validated['name'])) {
-                $validated['slug'] = Str::slug($validated['name']);
+            $validatedData = $request->validated();
+            
+            // Generate slug from product name if name has changed
+            if ($product->name !== $validatedData['name']) {
+                $validatedData['slug'] = Str::slug($validatedData['name']);
             }
-
-            // Update file gambar jika ada
+            
+            // Handle image upload if present
             if ($request->hasFile('image')) {
-                // Hapus gambar lama jika ada
+                // Delete old image if exists
                 if ($product->image && Storage::disk('public')->exists($product->image)) {
                     Storage::disk('public')->delete($product->image);
                 }
-
-                $validated['image'] = Storage::disk('public')->put('products', $request->file('image'));
+                
+                $path = $request->file('image')->store('products', 'public');
+                $validatedData['image'] = $path;
             }
-
-            $product->update($validated);
-
-            return redirect()->route('products.index.dashboard')->with('success', "Produk '{$product->name}' berhasil diperbarui.");
+            
+            // Update product
+            $product->update($validatedData);
+            
+            // Return with success flash message
+            return redirect()->route('products.index.dashboard')
+                ->with('success', "Product '{$product->name}' has been updated successfully!");
         } catch (\Exception $e) {
-            return redirect()->route('products.index.dashboard')->with('error', 'Gagal memperbarui produk: ' . $e->getMessage());
+            // Return with error flash message
+            return redirect()->route('products.index.dashboard')
+                ->with('error', 'Failed to update product: ' . $e->getMessage());
         }
     }
 
-    // Hapus produk (admin)
+    // Delete a product (admin)
     public function destroy($id)
     {
         try {
@@ -131,9 +143,11 @@ class ProductController extends Controller
             }
 
             $product->delete();
-            return redirect()->route('products.index.dashboard')->with('success', "Produk '{$productName}' berhasil dihapus.");
+            return redirect()->route('products.index.dashboard')
+                ->with('success', "Product '{$productName}' has been deleted successfully!");
         } catch (\Exception $e) {
-            return redirect()->route('products.index.dashboard')->with('error', 'Gagal menghapus produk: ' . $e->getMessage());
+            return redirect()->route('products.index.dashboard')
+                ->with('error', 'Failed to delete product: ' . $e->getMessage());
         }
     }
 

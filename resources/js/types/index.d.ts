@@ -79,6 +79,11 @@ export interface Category {
   name: string;
   slug: string;
   status: string;
+  created_at?: string;
+  updated_at?: string;
+  description?: string;
+  parent_id?: number | null;
+  image?: string | null;
 }
 
 
